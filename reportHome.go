@@ -124,4 +124,5 @@ func main() {
 	if err != nil {
 		fmt.Println("post form init error")
 	}
+	client.CloseIdleConnections()
 }
