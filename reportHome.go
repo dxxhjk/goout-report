@@ -9,9 +9,6 @@ import (
 	"os"
 	"regexp"
 	"strings"
-
-	//"regexp"
-	//"strings"
 	"time"
 )
 
@@ -33,9 +30,9 @@ func main() {
 		fmt.Println("Jar init error")
 	}
 	client := http.Client{Jar: jar}
-	fmt.Println(os.Args[1], os.Args[2])
+	fmt.Println(os.Getenv("BUPT_USERNAME"), os.Getenv("BUPT_PASSWORD"))
 	_, err = client.PostForm(urls["check"],
-		url.Values{"username": {os.Args[1]}, "password": {os.Args[2]}})
+			url.Values{"username": {os.Getenv("BUPT_USERNAME")}, "password": {os.Getenv("BUPT_PASSWORD")}})
 	if err != nil {
 		fmt.Println("check error")
 	}
