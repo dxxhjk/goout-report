@@ -40,8 +40,8 @@ func main() {
 	if err != nil {
 		fmt.Println("get main error")
 	}
-	fmt.Println("resp:      "resp)
-	fmt.Println("respbody:         "resp.Body)
+	fmt.Println("resp:      ", resp)
+	fmt.Println("respbody:         ", resp.Body)
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		fmt.Println("ioutil error")
