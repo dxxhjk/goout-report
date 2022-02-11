@@ -13,9 +13,9 @@ import (
 )
 
 func getDate() string {
-	year := time.Now().AddDate(0, 0, -1).Format("2006")
-	month := time.Now().AddDate(0, 0, -1).Format("01")
-	day := time.Now().AddDate(0, 0, -1).Format("02")
+	year := time.Now().Format("2006")
+	month := time.Now().Format("01")
+	day := time.Now().Format("02")
 	return year + month + day
 }
 
