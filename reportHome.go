@@ -30,7 +30,7 @@ func main() {
 		fmt.Println("Jar init error")
 	}
 	client := http.Client{Jar: jar}
-	fmt.Println(os.Getenv("BUPT_USERNAME"), os.Getenv("BUPT_PASSWORD"))
+	fmt.Println(len(os.Getenv("BUPT_USERNAME")), len(os.Getenv("BUPT_PASSWORD")))
 	_, err = client.PostForm(urls["check"],
 			url.Values{"username": {os.Getenv("BUPT_USERNAME")}, "password": {os.Getenv("BUPT_PASSWORD")}})
 	if err != nil {
