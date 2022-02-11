@@ -40,8 +40,8 @@ func main() {
 	if err != nil {
 		fmt.Println("get main error")
 	}
-	fmt.Println(resp)
-	fmt.Println(resp.Body)
+	fmt.Println("resp:      "resp)
+	fmt.Println("respbody:         "resp.Body)
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		fmt.Println("ioutil error")
@@ -58,7 +58,6 @@ func main() {
 	findUid := re.FindAll(body, -1)
 	uid := strings.Split(string(findUid[0]), ":")[1]
 	date := getDate()
-	fmt.Println(string(body))
 	fmt.Println(created, id, date, uid)
 	//_, err = client.PostForm(urls["save"],
 	//	url.Values{
