@@ -23,7 +23,7 @@ func main() {
 	defer func() {
 		if err := recover(); err != nil{
 			fmt.Println(err)
-			time.Sleep(time.Second)
+			time.Sleep(60 * time.Second)
 			main()
 		}
 	}()
