@@ -21,12 +21,11 @@ func getDate() string {
 
 func main() {
 	defer func() {
-		fmt.Println("c")
-		if err:=recover();err!=nil{
+		if err := recover(); err != nil{
 			fmt.Println(err)
+			time.Sleep(time.Second)
+			main()
 		}
-		time.Sleep(time.Second)
-		main()
 	}()
 	urls := make(map[string]string, 0)
 	urls["check"] = "https://app.bupt.edu.cn/uc/wap/login/check"
