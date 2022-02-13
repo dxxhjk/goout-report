@@ -65,7 +65,7 @@ func main() {
 	re = regexp.MustCompile(`"id":[0-9]+`)
 	findId := re.FindAll(body, -1)
 	id := strings.Split(string(findId[0]), ":")[1]
-	re = regexp.MustCompile(`"uid":[0-9]+`)
+	re = regexp.MustCompile(`"uid":"[0-9]+"`)
 	findUid := re.FindAll(body, -1)
 	uid := strings.Split(string(findUid[0]), ":")[1]
 	date := getDate()
