@@ -13,13 +13,20 @@ import (
 )
 
 func getDate() string {
-	year := time.Now().AddDate(0, 0, -1).Format("2006")
-	month := time.Now().AddDate(0, 0, -1).Format("01")
-	day := time.Now().AddDate(0, 0, -1).Format("02")
+	year := time.Now().Format("2006")
+	month := time.Now().Format("01")
+	day := time.Now().Format("02")
 	return year + month + day
 }
 
 func main() {
+	defer func() {
+		if err := recover(); err != nil{
+			fmt.Println(err)
+			time.Sleep(60 * time.Second)
+			main()
+		}
+	}()
 	urls := make(map[string]string, 0)
 	urls["check"] = "https://app.bupt.edu.cn/uc/wap/login/check"
 	urls["main"] = "https://app.bupt.edu.cn/ncov/wap/default/index"
@@ -27,24 +34,27 @@ func main() {
 
 	jar, err := cookiejar.New(nil)
 	if err != nil {
-		fmt.Println("Jar init error")
+		panic("Jar init error")
 	}
 	client := http.Client{Jar: jar}
 	fmt.Println(len(os.Getenv("BUPT_USERNAME")), len(os.Getenv("BUPT_PASSWORD")))
 	_, err = client.PostForm(urls["check"],
 			url.Values{"username": {os.Getenv("BUPT_USERNAME")}, "password": {os.Getenv("BUPT_PASSWORD")}})
 	if err != nil {
-		fmt.Println("check error")
+		panic("check error")
 	}
 	resp, err := client.Get(urls["main"])
 	if err != nil {
-		fmt.Println("get main error")
+		panic("get main error")
+	}
+	if resp == nil {
+		panic("get empty resp")
 	}
 	fmt.Println("resp:      ", resp)
 	fmt.Println("respbody:         ", resp.Body)
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		fmt.Println("ioutil error")
+		panic("ioutil error")
 	}
 
 	//获取表单参数
@@ -54,7 +64,7 @@ func main() {
 	re = regexp.MustCompile(`"id":[0-9]+`)
 	findId := re.FindAll(body, -1)
 	id := strings.Split(string(findId[0]), ":")[1]
-	re = regexp.MustCompile(`"uid":[0-9]+`)
+	re = regexp.MustCompile(`"uid":"[0-9]+"`)
 	findUid := re.FindAll(body, -1)
 	uid := strings.Split(string(findUid[0]), ":")[1]
 	date := getDate()
@@ -124,4 +134,5 @@ func main() {
 	if err != nil {
 		fmt.Println("post form init error")
 	}
+	client.CloseIdleConnections()
 }
