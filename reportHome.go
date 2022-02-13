@@ -20,6 +20,14 @@ func getDate() string {
 }
 
 func main() {
+	defer func() {
+		fmt.Println("c")
+		if err:=recover();err!=nil{
+			fmt.Println(err)
+		}
+		time.Sleep(time.Second)
+		main()
+	}()
 	urls := make(map[string]string, 0)
 	urls["check"] = "https://app.bupt.edu.cn/uc/wap/login/check"
 	urls["main"] = "https://app.bupt.edu.cn/ncov/wap/default/index"
@@ -27,28 +35,27 @@ func main() {
 
 	jar, err := cookiejar.New(nil)
 	if err != nil {
-		fmt.Println("Jar init error")
+		panic("Jar init error")
 	}
 	client := http.Client{Jar: jar}
 	fmt.Println(len(os.Getenv("BUPT_USERNAME")), len(os.Getenv("BUPT_PASSWORD")))
 	_, err = client.PostForm(urls["check"],
 			url.Values{"username": {os.Getenv("BUPT_USERNAME")}, "password": {os.Getenv("BUPT_PASSWORD")}})
 	if err != nil {
-		fmt.Println("check error")
+		panic("check error")
 	}
 	resp, err := client.Get(urls["main"])
 	if err != nil {
-		fmt.Println("get main error")
+		panic("get main error")
 	}
 	if resp == nil {
-		main()
-		return
+		panic("get empty resp")
 	}
 	fmt.Println("resp:      ", resp)
 	fmt.Println("respbody:         ", resp.Body)
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		fmt.Println("ioutil error")
+		panic("ioutil error")
 	}
 
 	//获取表单参数
