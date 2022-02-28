@@ -23,7 +23,7 @@ func main() {
 	defer func() {
 		if err := recover(); err != nil{
 			fmt.Println(err)
-			time.Sleep(time.Second)
+			time.Sleep(600 * time.Second)
 			main()
 		}
 	}()
@@ -41,10 +41,12 @@ func main() {
 	_, err = client.PostForm(urls["check"],
 		url.Values{"username": {os.Getenv("BUPT_USERNAME")}, "password": {os.Getenv("BUPT_PASSWORD")}})
 	if err != nil {
+		fmt.Println(err)
 		panic("check error")
 	}
 	resp, err := client.Get(urls["main"])
 	if err != nil {
+		fmt.Println(err)
 		panic("get main error")
 	}
 	if resp == nil {
@@ -54,6 +56,7 @@ func main() {
 	fmt.Println("respbody:         ", resp.Body)
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
+		fmt.Println(err)
 		panic("ioutil error")
 	}
 
